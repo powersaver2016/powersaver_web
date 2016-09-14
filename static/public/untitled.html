@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="css/bootstrap-editable.css">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap-table.js"></script>
+    <script src="js/bootstrap-editable.js"></script>
+    <script src="js/bootstrap-editable2.js"></script>
+    <script src="js/bootstrap-table-export.js"></script>
+    <style>
+        .container {
+            width: auto;
+            margin-left: 180px;
+            margin-right: 180px;
+        }​
+        input[type="checkbox"] {
+            font-family: 宋体;
+            font-size: 12px;
+            color: #000000;
+            border: 0px;
+            background-color: #DBFBF7;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+<table id="appList" data-toggle="table">
+    <thead>
+    <tr>
+        <th data-field="name" data-formatter="nameFormatter">Name</th>
+        <th data-field="stargazers_count" data-formatter="starsFormatter">Stars</th>
+        <th data-field="stargazers_count" data-formatter="cbStarFormatter">Stars</th>
+        <th data-field="forks_count" data-formatter="cbForkFormatter">Forks</th>
+        <th data-field="forks_count" >Forks</th>
+        <th data-field="description">Description</th>
+    </tr>
+    </thead>
+</table>
+</div>
+</body>
+<script>
+var data = [{
+    name: "bootstrap-table",
+    stargazers_count: 526,
+    stargazers_count: 1,
+    forks_count: 2,
+    forks_count: 122,
+    description: 'An extended Bootstrap table with radio, chec',
+}
+];
+
+$('#appList').bootstrapTable({
+  data:data
+});
+
+function nameFormatter(value) {
+    return '<a href="https://github.com/wenzhixin/' + value + '">' + value + '</a>';
+}
+
+function starsFormatter(value) {
+    return '<i class="glyphicon glyphicon-star"></i> ' + value;
+}
+
+function cbForkFormatter(value) {
+    return '<input type="checkbox"' + (value > 100 ? " checked " : "")  + '>';
+}
+
+function cbStarFormatter(value) {
+    return '<input type="checkbox"' + (value > 300 ? " checked " : "")  + '>';
+}
+
+
+
+</script>
+
+</html>

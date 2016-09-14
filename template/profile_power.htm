@@ -8,6 +8,18 @@
 
     <link href="static/public/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/public/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!--bootstrap-table-->
+    <link rel="stylesheet" href="/static/public/css/bootstrap-table.min.css">
+
+    <script src="static/public/js/jquery.min.js"></script>
+    <script src="static/public/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/public/js/tableExport.js"></script>
+    <script src="/static/public/js/jquery.base64.js"></script>
+    <script src="/static/public/js/bootstrap-table.js"></script>
+    <script src="/static/public/js/bootstrap-table-export.js"></script>
+
     <style>
         .container {
             width: auto;
@@ -186,48 +198,16 @@
              </tr>
              <tr id="priorityTemplate2" hidden>
                 <td>
-                <table class="table table-bordered table-hover" id="appList">
-                    <thead>
-                        <tr>
-                            <th width="5%" class="text-center">No.</th>
-                            <th width="25%" class="text-center">app</th>
-                            <th width="8%" class="text-center">added</th>
-                            <th width="8%" class="text-center">data</th>
-                            <th width="8%" class="text-center">gps</th>
-                            <th class="text-center">delay</th>
-                            <th class="text-center">dcount</th>
-                            <th class="text-center">data_kb</th>
-                            <th class="text-center">in_count</th>
-                            <th class="text-center">g_delay</th>
-                            <th class="text-center">s_delay</th>
-                            <th class="text-center">k_delay</th>
-                            <th class="text-center">g_delay_hot</th>
-                            <th class="text-center">k_delay_hot</th>
-                            <th width="10%" class="text-center">edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr id="appTemplate" style='height:21pt;' hidden>
-                            <td align="left"><input type="text" style="text-align:center" class="form-control" readonly="readonly" name="number"></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="app_name"></td>
-                            <td align="center"><input type="checkbox"  class="form-control" checked name="added"></td>
-                            <td align="center"><input type="checkbox"  class="form-control" checked name="set_data_connection"></td>
-                            <td align="center"><input type="checkbox"  class="form-control" unchecked name="set_location"></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="app_delay"></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_delay_count"/></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_data_kb"/></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_inactive_count"/></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_location_delay"></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="sensor_delay"></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="kill_delay"></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="location_delay_hot"></td>
-                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="kill_delay_hot"></td>
-                            <td align="center">
-                                <button class="btn btn-sm btn-danger deleteRow" ><i class="glyphicon glyphicon-minus"></i></button>
-                                <button class="btn btn-sm btn-success addRow" ><i class="glyphicon glyphicon-plus"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
+                <table class="table table-bordered table-hover" id="appList"
+                   data-toggle="table"
+                   data-show-columns="true"
+                   data-search="true"
+                   data-show-refresh="true"
+                   data-detail-view="true"
+                   data-show-toggle="true"
+                   data-show-export="true"
+                   data-pagination="true"
+                   >
                 </table>
                 </td>
              </tr>
@@ -241,6 +221,7 @@
 <script src="static/public/js/md5.min.js"></script>
 <script src="static/public/js/bootstrap.min.js"></script>
 <script src="static/public/js/ejs.min.js"></script>
+<script src="static/public/js/power.js"></script>
 <script>
     // start
     var regions = {{c['regions']}};
@@ -248,7 +229,7 @@
     console.log('regions', regions);
     console.log('buckets', buckets);
 </script>
-<script src="static/public/js/power.js"></script>
+
 </body>
 </html>
 

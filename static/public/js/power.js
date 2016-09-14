@@ -28,7 +28,7 @@ $(function() {
         var template2 = $('#appTemplate');
         var newRow = template2.clone().removeAttr("hidden id");
         newRow.appendTo(table);
-        refreshAppTableNumber(table);
+        console.log(newRow);
         return newRow;
     };
 
@@ -71,6 +71,7 @@ $(function() {
 
     var refreshAppTableNumber = function(appTable) {
         var appRows = appTable.rows;
+        console.log(appRows);
         var index = 1;
         for(var j=2;j < appRows.length;j++) {
             $(appRows[j]).find('[name="number"]').val(index++);
@@ -94,17 +95,20 @@ $(function() {
         tr1.insertBefore(template1);
         tr2.insertBefore(template1);
         var priorityTable = document.getElementById("priorityList");
-        // console.log(table);
+        console.log(priorityTable);
+        // console.log(result);
         var rows = priorityTable.rows;
         var appTable = rows[rows.length-3].childNodes[1].childNodes[1];
+        console.log(appTable);
         if (priority) {
             var featureTable = rows[rows.length-4].childNodes[1].childNodes[1];
             fillFeatureTable(featureTable, priority, type, result);
+            console.log('fillAppTable');
             fillAppTable(appTable, result);
         } else {
             addRowToTable(appTable);
         }
-        refreshAppTableNumber(appTable);
+        // refreshAppTableNumber(appTable);
         return appTable;
     };
 
@@ -155,10 +159,32 @@ $(function() {
     };
 
     var fillAppTable = function(appTable, result) {
+        $('#table').bootstrapTable({
+            columns: [{
+                field: 'id',
+                title: 'Item ID'
+            }, {
+                field: 'name',
+                title: 'Item Name'
+            }, {
+                field: 'price',
+                title: 'Item Price'
+            }],
+            data: [{
+                id: 1,
+                name: 'Item 1',
+                price: '$1'
+            }, {
+                id: 2,
+                name: 'Item 2',
+                price: '$2'
+            }]
+        });
         var obj = JSON.parse(result);
         var appList = obj.app_list;
         appList.forEach(function(item){
             var newRow = addRowToTable(appTable);
+            console.log(item);
             $(newRow).find('[name="app_name"]').val(item.app_name);
             if (item.remark)
                 $(newRow).find('[name="remark"]').val(item.remark);
@@ -370,7 +396,7 @@ $(function() {
                 } catch (error) {
                      alert(error.message);
                      alert("导入文件有误!");
-                     popTable();
+                     // popTable();
                 }
             };
         })(file);
