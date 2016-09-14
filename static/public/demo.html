@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Profile</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css" >
     <link rel="stylesheet" href="css/bootstrap-table.min.css">
     <link rel="stylesheet" href="css/bootstrap-editable.css">
 
@@ -39,12 +39,21 @@
 <table id="appList" data-toggle="table">
     <thead>
     <tr>
-        <th data-field="name" data-formatter="nameFormatter">Name</th>
-        <th data-field="stargazers_count" data-formatter="starsFormatter">Stars</th>
-        <th data-field="stargazers_count" data-formatter="cbStarFormatter">Stars</th>
-        <th data-field="forks_count" data-formatter="cbForkFormatter">Forks</th>
-        <th data-field="forks_count" >Forks</th>
-        <th data-field="description">Description</th>
+        <th data-field="number" data-width="5%">No.</th>
+        <th data-field="app_name" data-width="25%" data-formatter="editableFormatter">app</th>
+        <th data-field="set_data_connection" data-width="8%" data-formatter="checkboxFormatter">data</th>
+        <th data-field="set_location" data-width="8%" data-formatter="checkboxFormatter">gps</th>
+
+        <th data-field="app_delay" data-formatter="nameFormatter">delay</th>
+        <th data-field="set_delay_count" data-formatter="nameFormatter">dcount</th>
+        <th data-field="set_data_kb" data-formatter="nameFormatter">data_kb</th>
+        <th data-field="set_inactive_count" data-formatter="nameFormatter">in_count</th>
+        <th data-field="set_location_delay" data-formatter="nameFormatter">g_delay</th>
+        <th data-field="sensor_delay" data-formatter="nameFormatter">s_delay</th>
+        <th data-field="kill_delay" data-formatter="nameFormatter">k_delay</th>
+        <th data-field="location_delay_hot" data-formatter="nameFormatter">g_delay_hot</th>
+        <th data-field="kill_delay_hot" data-formatter="nameFormatter">k_delay_hot</th>
+        <th data-field="operation" data-width="10%" data-align="center" data-formatter="opFormatter">edit</th>
     </tr>
     </thead>
 </table>
@@ -52,12 +61,19 @@
 </body>
 <script>
 var data = [{
-    name: "bootstrap-table",
-    stargazers_count: 526,
-    stargazers_count: 1,
-    forks_count: 2,
-    forks_count: 122,
-    description: 'An extended Bootstrap table with radio, chec',
+    number: "1",
+    app_name: 526,
+    set_data_connection: true,
+    set_location: false,
+    app_delay: 122,
+    set_delay_count: 122,
+    set_data_kb: 122,
+    set_inactive_count: 122,
+    set_location_delay: 122,
+    sensor_delay: 122,
+    kill_delay: 122,
+    location_delay_hot: 122,
+    kill_delay_hot: 122,
 }
 ];
 
@@ -65,23 +81,49 @@ $('#appList').bootstrapTable({
   data:data
 });
 
+    String.prototype.startWith=function(str){
+        if(str==null||str==""||this.length==0||str.length>this.length)
+          return false;
+        if(this.substr(0,str.length)==str)
+          return true;
+        else
+          return false;
+        return true;
+    }
+
+for (x in $('#appList')[0]) {
+    if (x.startWith('bootstrap')) {
+        console.log(x);
+    }
+
+}
+
+for (x in $('#appList')) {
+    if (x.startWith('bootstrap')) {
+        console.log(x);
+    }
+
+    if (x.startWith('edit')) {
+        console.log(x);
+    }
+    // console.log(x);
+}
+
+function editableFormatter(value) {
+    return '<a href="javascript:void(0)" data-name="app_name" data-pk="undefined" data-value="' + value + '" class="editable editable-click">' + value + '</a>';
+}
+
 function nameFormatter(value) {
     return '<a href="https://github.com/wenzhixin/' + value + '">' + value + '</a>';
 }
 
-function starsFormatter(value) {
-    return '<i class="glyphicon glyphicon-star"></i> ' + value;
+function opFormatter(value) {
+    return '<button class="btn btn-sm btn-danger deleteRow" ><i class="glyphicon glyphicon-minus"></i></button><button class="btn btn-sm btn-success addRow" ><i class="glyphicon glyphicon-plus"></i></button>';
 }
 
-function cbForkFormatter(value) {
-    return '<input type="checkbox"' + (value > 100 ? " checked " : "")  + '>';
+function checkboxFormatter(value) {
+    return '<input type="checkbox"' + (value ? " checked " : "")  + '>';
 }
-
-function cbStarFormatter(value) {
-    return '<input type="checkbox"' + (value > 300 ? " checked " : "")  + '>';
-}
-
-
 
 </script>
 

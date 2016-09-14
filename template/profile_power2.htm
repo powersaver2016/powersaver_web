@@ -10,14 +10,12 @@
     <link href="static/public/css/bootstrap-theme.min.css" rel="stylesheet">
     <!--bootstrap-table-->
     <link rel="stylesheet" href="/static/public/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="/static/public/css/bootstrap-editable.css">
 
     <script src="static/public/js/jquery.min.js"></script>
     <script src="static/public/js/bootstrap.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="/static/public/js/bootstrap-editable.js"></script>
-    <script src="/static/public/js/bootstrap-editable2.js"></script>
+    <script src="/static/public/js/jquery.base64.js"></script>
     <script src="/static/public/js/bootstrap-table.js"></script>
     <script src="/static/public/js/bootstrap-table-export.js"></script>
 
@@ -199,21 +197,13 @@
              </tr>
              <tr id="priorityTemplate2">
                 <td>
-                    <table id="appList" data-toggle="table"
-                        data-pagination="true"
-                        data-search="true"
-                        data-show-refresh="true"
-                        data-detail-view="true"
-                        data-show-toggle="true"
-                        data-show-export="true"
-                        data-page-size="15"
-                    >
+                    <table id="appList" data-toggle="table">
                         <thead>
                         <tr>
-                            <th data-field="number" data-align="center" data-width="5%">No.</th>
-                            <th data-field="app_name" data-width="25%" data-align="center" data-editable="true">app</th>
-                            <th data-field="set_data_connection" data-align="center" data-width="8%" data-formatter="checkboxFormatter">data</th>
-                            <th data-field="set_location" data-align="center" data-width="8%" data-formatter="checkboxFormatter">gps</th>
+                            <th data-field="number" data-width="5%">No.</th>
+                            <th data-field="app_name" data-width="25%" data-align="center" data-formatter="nameFormatter">app</th>
+                            <th data-field="set_data_connection" data-width="8%" data-formatter="checkboxFormatter">data</th>
+                            <th data-field="set_location" data-width="8%" data-formatter="checkboxFormatter">gps</th>
 
                             <th data-field="app_delay" data-formatter="nameFormatter">delay</th>
                             <th data-field="set_delay_count" data-formatter="nameFormatter">dcount</th>
@@ -257,10 +247,6 @@ refresh();
 
 function nameFormatter(value) {
     return '<a href="https://github.com/wenzhixin/' + value + '">' + value + '</a>';
-}
-
-function textFormatter(value) {
-    return '<input type="text">';
 }
 
 function opFormatter(value) {
@@ -463,24 +449,53 @@ function convertJsonItem(item, index) {
     return data;
 }
 
+var data = {
+    number: "1",
+    app_name: 526,
+    set_data_connection: true,
+    set_location: false,
+    app_delay: 122,
+    set_delay_count: 122,
+    set_data_kb: 122,
+    set_inactive_count: 122,
+    set_location_delay: 122,
+    sensor_delay: 122,
+    kill_delay: 122,
+    location_delay_hot: 122,
+    kill_delay_hot: 122,
+};
+
+var datas = [{
+    number: "1",
+    app_name: 526,
+    set_data_connection: true,
+    set_location: false,
+    app_delay: 122,
+    set_delay_count: 122,
+    set_data_kb: 122,
+    set_inactive_count: 122,
+    set_location_delay: 122,
+    sensor_delay: 122,
+    kill_delay: 122,
+    location_delay_hot: 122,
+    kill_delay_hot: 122,
+}
+];
+
+    $("#appList").bootstrapTable({
+      data:datas
+    });
 function fillAppTable(appTable, result) {
     var obj = JSON.parse(result);
     var appList = obj.app_list;
     var dataList = new Array();
     var data;
     var index = 1;
-    for (; index < appList.length; index++) {
-        data = convertJsonItem(appList[index], index);
+    appList.forEach(function(item) {
+        data = convertJsonItem(item, index++);
         $("#appList").bootstrapTable('append', data);
-    }
-    // appList.forEach(function(item) {
-    //     data = convertJsonItem(item, index++);
-    //     if (index > 50) {
-    //         break;
-    //     }
-    //     $("#appList").bootstrapTable('append', data);
-    // });
-    // console.log(dataList);
+    });
+    console.log(dataList);
 
     // fillData($(appTable), dataList);
     // if (appList.length < 1) {addRowToTable(appTable);}

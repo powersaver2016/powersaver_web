@@ -158,49 +158,57 @@ $(function() {
         });
     };
 
-    var fillAppTable = function(appTable, result) {
-        $('#table').bootstrapTable({
-            columns: [{
-                field: 'id',
-                title: 'Item ID'
-            }, {
-                field: 'name',
-                title: 'Item Name'
-            }, {
-                field: 'price',
-                title: 'Item Price'
-            }],
-            data: [{
-                id: 1,
-                name: 'Item 1',
-                price: '$1'
-            }, {
-                id: 2,
-                name: 'Item 2',
-                price: '$2'
-            }]
+    var convertJsonItem = function(item, index) {
+        var data = {
+            number: index,
+            app_name: item.app_name,
+            set_data_connection: false,
+            set_location: false,
+            app_delay: '',
+            set_delay_count: '',
+            set_data_kb: '',
+            set_inactive_count: '',
+            set_location_delay: '',
+            sensor_delay: '',
+            kill_delay: '',
+            location_delay_hot: '',
+            kill_delay_hot: '',
+        };
+
+        item.action_list.forEach(function(action) {
+            data[action.action_key] = action.action_value;
         });
+
+        return data;
+        // console.log(data);
+    }
+
+    String.prototype.startWith=function(str){
+        if(str==null||str==""||this.length==0||str.length>this.length)
+          return false;
+        if(this.substr(0,str.length)==str)
+          return true;
+        else
+          return false;
+        return true;
+    }
+
+    var fillAppTable = function(appTable, result) {
         var obj = JSON.parse(result);
         var appList = obj.app_list;
-        appList.forEach(function(item){
-            var newRow = addRowToTable(appTable);
-            console.log(item);
-            $(newRow).find('[name="app_name"]').val(item.app_name);
-            if (item.remark)
-                $(newRow).find('[name="remark"]').val(item.remark);
-            $(newRow).find('[name="added"]').prop('checked', item.added);
-            var actionList = item.action_list;
-            actionList.forEach(function(action){
-                var key = '[name="' + action.action_key + '"]';
-                var value = action.action_value;
-                if (action.action_key == 'set_data_connection' || action.action_key == 'set_location' || action.action_key == 'set_sensor') {
-                    $(newRow).find(key).prop('checked', value);
-                } else {
-                    $(newRow).find(key).val(value);
-                }
-            });
+        var dataList = new Array();
+        var data;
+        var index = 1;
+        appList.forEach(function(item) {
+            data = convertJsonItem(item, index++);
+            dataList.push(data);
         });
-        if (appList.length < 1) {addRowToTable(appTable);}
+        // console.log(dataList);
+        // $(appTable).bootstrapTable({
+        //   data:dataList
+        // });
+        fillData($(appTable), dataList);
+        // if (appList.length < 1) {addRowToTable(appTable);}
     };
 
 
