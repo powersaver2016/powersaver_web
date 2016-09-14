@@ -1,0 +1,93 @@
+<nav class="navbar navbar-default navbar-static-top" ng-controller="BackupCtr">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/regions">云控个人空间</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">备份查看</p></li>
+      <li><p class="navbar-text">{{region}}</p></li>
+      <li><p class="navbar-text">{{bucket}}</p></li>
+      <li><p class="navbar-text">{{id}}</p></li>
+      <li><a href="#/regions/{{region}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+    </ul>
+  </div>
+</nav>
+
+<div class="container" ng-controller="BackupCtr">
+  <div class="checkbox text-right">
+    <p><input type="checkbox" ng-model="useJson">JSON模式</p>
+  </div>
+  <h4>测试配置</h4>
+  <div class="row" style="margin-bottom: 6px">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-hover" id="testTable">
+        <thead>
+        <tr>
+          <th class="text-center col-xs-2">priority</th>
+          <th class="text-center col-xs-8"></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat-start="c in profileConfigs['test']">
+            <td rowspan=2>
+              <input type="text" ng-model="c.priority" class="form-control" name="priority"/>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="c.pushStrategy" name="testModeOptions_{{$index}}" value="INTERNAL">内部用户
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="c.pushStrategy" name="testModeOptions_{{$index}}" value="MVNUMBER">限制数量
+                </label>
+              </div>
+              <fieldset>
+                <input type="text" ng-model="c.pushNumber" class="form-control"/>
+              </fieldset>
+            </td>
+            <td>
+              <input type="text" ng-model="c.type" class="form-control" name="type"/>
+            </td>
+          </tr>
+          <tr ng-repeat-end id="testTemplate2">
+            <td colspan=2>
+              <textarea ng-if="!useJson" ng-show="!useJson" ng-model="c.result" class="form-control" rows="3" placeholder="result"></textarea>
+              <div ng-if="useJson" ng-show="useJson" ng-jsoneditor ng-model="c.json" options="jsoneditor.options" style="with:auto; height:200px;"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr />
+  <h4>正式配置</h4>
+  <div class="row" style="margin-bottom: 6px">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th class="text-center col-xs-2">priority</th>
+          <th class="text-center col-xs-8"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat-start="c in profileConfigs['norm']">
+          <td rowspan=2>
+            <input ng-model="c.priority" type="text" class="form-control" name="priority"/></td>
+          <td>
+            <input ng-model="c.type" type="text" class="form-control" name="type"/>
+          </td>
+        </tr>
+        <tr ng-repeat-end>
+          <td colspan=2>
+            <textarea ng-if="!useJson" ng-show="!useJson" ng-model="c.result" class="form-control" rows="3" placeholder="result"></textarea>
+            <div ng-if="useJson" ng-show="useJson" ng-jsoneditor ng-model="c.json" options="jsoneditor.options" style="with:auto; height:200px;"></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

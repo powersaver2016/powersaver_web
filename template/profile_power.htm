@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile</title>
+
+    <link href="static/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/public/css/bootstrap-theme.min.css" rel="stylesheet">
+    <style>
+        .container {
+            width: auto;
+            margin-left: 180px;
+            margin-right: 180px;
+        }​
+        input[type="checkbox"] {
+            font-family: 宋体;
+            font-size: 12px;
+            color: #000000;
+            border: 0px;
+            background-color: #DBFBF7;
+        }
+    </style>
+</head>
+
+<body>
+<script src="static/public/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var offset = $("#floatingSubmit").offset();
+        var topPadding = 180;
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > offset.top) {
+                $("#floatingSubmit").stop().animate({
+                    marginTop: $(window).scrollTop() - offset.top + topPadding
+                },0);
+            } else {
+                $("#floatingSubmit").stop().animate({
+                    marginTop: 0
+                },0);
+            };
+        });
+    });
+</script>
+<style type="text/css">
+    #floating-box {
+        position: relative;
+    }
+    #floatingSubmit {
+        position: absolute;
+        top: 180px;
+        left: 1700px;
+        border: 0px solid #B5076D;
+        padding: 0 10px 10px 10px;
+        width: 200px;
+        background-color: #FFF;
+    }
+</style>
+<div id="floating-box">
+    <div id="floatingSubmit" class="col-xs-2">
+        <button id="floatingSubmitBtn" class="btn btn-info btn-lg" type="button">提交</button>
+    </div>
+</div>
+
+<div class="container">
+    <h1>bucket配置 <small><a href="/">返回首页</a></small></h1>
+    <div class="row">
+        <div class="col-xs-8">
+            <h3>用户名: {{c['username']}}</h3><hr/>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom:12px">
+        <div class="col-xs-2">
+            <select class="form-control" id="regionSelect"></select>
+        </div>
+        <div class="col-xs-2">
+          <select class="form-control" id="bucketSelect"></select>
+        </div>
+        <div class="col-xs-1">
+          <select class="form-control" id="prioritySelect"></select>
+        </div>
+        <div class="col-xs-1">
+            <button id="exportConfigBtn" class="btn btn-info" type="button">导出配置</button>
+        </div>
+        <div class="col-xs-5">
+            <div class="input-group">
+                <span class="input-group-addon">导入配置</span>
+                <input type="file" id="files" class="form-control" name="files[]" multiple/>
+                <span class="input-group-btn">
+                    <input id ="importConfigBtn" class="btn btn-info" type="submit" value="开始导入" />
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <button id="allSubmitBtn" class="btn btn-info" type="button">全部提交</button>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom:12px">
+        <div class="col-xs-12" >
+            <table width="100%" class="table table-bordered table-hover" id="priorityList">
+                <tr id="priorityTemplate1" hidden>
+                <td>
+                <table  class="table table-bordered table-hover" id="featureList">
+                    <thead>
+                        <tr>
+                            <th class="text-center">priority</th>
+                            <th width="16%" class="text-center">type</th>
+                            <th width="5%" class="text-center">smode</th>
+                            <th width="5%" class="text-center">doze</th>
+                            <th width="5%" class="text-center">idle</th>
+                            <th width="5%" class="text-center">standby</th>
+                            <th width="5%" class="text-center">ble_scan</th>
+                            <th width="5%" class="text-center">frozen</th>
+                            <th width="4%" class="text-center">sensor</th>
+                            <th width="4%" class="text-center">data</th>
+                            <th width="4%" class="text-center">gps</th>
+                            <th class="text-center">delay</th>
+                            <th class="text-center">dcount</th>
+                            <th class="text-center">data_kb</th>
+                            <th class="text-center">in_count</th>
+                            <th class="text-center">g_delay</th>
+                            <th class="text-center">s_delay</th>
+                            <th class="text-center">k_delay</th>
+                            <th width="10%" class="text-center">edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" style="text-align:center" class="form-control" name="priority"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="type"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="hide_mode"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="idle_mode"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="miui_idle"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="miui_standby"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="ble_scan_block"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="frozen"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="set_sensor"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="set_data_connection"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="set_location"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="app_delay"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="set_delay_count"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="set_data_kb"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="set_inactive_count"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="set_location_delay"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="sensor_delay"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="kill_delay"/></td>
+                            <td align="center">
+                                <button class="btn btn-danger deletePriority" ><i class="glyphicon glyphicon-minus"></i></button>
+                                <button class="btn btn-success addPriority" ><i class="glyphicon glyphicon-plus"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">系统外围apps</td>
+                            <td colspan="20"><input type="text" style="text-align:center" class="form-control" name="no_core_system_apps"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">音乐apps</td>
+                            <td colspan="20"><input type="text" style="text-align:center" class="form-control" name="music_apps"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">极致apps</td>
+                            <td colspan="20"><input type="text" style="text-align:center" class="form-control" name="level_ultimate_special_apps"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ble_scan_param</td>
+                            <td colspan="20"><input type="text" style="text-align:center" class="form-control" name="ble_scan_param"/></td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2">FeedBackControl</th>
+                            <th width="5%" class="text-center">hot_fb</th>
+                            <th width="5%" class="text-center">net_fb</th>
+                            <th class="text-center">g_delay_hot</th>
+                            <th class="text-center">k_delay_hot</th>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"  class="form-control" unchecked name="hot_feedback"/></td>
+                            <td><input type="checkbox"  class="form-control" unchecked name="network_feedback"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="location_delay_hot"/></td>
+                            <td><input type="text" style="text-align:center" class="form-control" name="kill_delay_hot"/></td>
+                        </tr>
+                    <tbody>
+                </table>
+                </td>
+             </tr>
+             <tr id="priorityTemplate2" hidden>
+                <td>
+                <table class="table table-bordered table-hover" id="appList">
+                    <thead>
+                        <tr>
+                            <th width="5%" class="text-center">No.</th>
+                            <th width="25%" class="text-center">app</th>
+                            <th width="8%" class="text-center">added</th>
+                            <th width="8%" class="text-center">data</th>
+                            <th width="8%" class="text-center">gps</th>
+                            <th class="text-center">delay</th>
+                            <th class="text-center">dcount</th>
+                            <th class="text-center">data_kb</th>
+                            <th class="text-center">in_count</th>
+                            <th class="text-center">g_delay</th>
+                            <th class="text-center">s_delay</th>
+                            <th class="text-center">k_delay</th>
+                            <th class="text-center">g_delay_hot</th>
+                            <th class="text-center">k_delay_hot</th>
+                            <th width="10%" class="text-center">edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="appTemplate" style='height:21pt;' hidden>
+                            <td align="left"><input type="text" style="text-align:center" class="form-control" readonly="readonly" name="number"></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="app_name"></td>
+                            <td align="center"><input type="checkbox"  class="form-control" checked name="added"></td>
+                            <td align="center"><input type="checkbox"  class="form-control" checked name="set_data_connection"></td>
+                            <td align="center"><input type="checkbox"  class="form-control" unchecked name="set_location"></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="app_delay"></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_delay_count"/></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_data_kb"/></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_inactive_count"/></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="set_location_delay"></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="sensor_delay"></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="kill_delay"></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="location_delay_hot"></td>
+                            <td align="center"><input type="text" style="text-align:center" class="form-control" name="kill_delay_hot"></td>
+                            <td align="center">
+                                <button class="btn btn-sm btn-danger deleteRow" ><i class="glyphicon glyphicon-minus"></i></button>
+                                <button class="btn btn-sm btn-success addRow" ><i class="glyphicon glyphicon-plus"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </td>
+             </tr>
+        </table>
+    </div>
+</div>
+
+</div>
+
+<script src="static/public/js/jquery.min.js"></script>
+<script src="static/public/js/md5.min.js"></script>
+<script src="static/public/js/bootstrap.min.js"></script>
+<script src="static/public/js/ejs.min.js"></script>
+<script>
+    // start
+    var regions = {{c['regions']}};
+    var buckets = {{c['buckets']}};
+    console.log('regions', regions);
+    console.log('buckets', buckets);
+</script>
+<script src="static/public/js/power.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,195 @@
+<div class="container" ng-controller="XmlEditorCtr">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1" >
+            <div class="page-header">
+                <div class="alert alert-info text-center">
+                    <h4><strong>MIUI Native Debug Configure</strong></h4>
+                </div>
+                <a href="#/regions/bugreport/buckets/native_crash_profile/profiles" class="btn btn-large" style="float:right">跳转到旧版页面</a>
+                <a href="http://ccadmin.sys.miui.com/c3_filemanager/files#/bugreport/native_crash_file/" target="_blank" class="btn btn-large" style="float:right">跳转到文件页面</a>
+                <br />
+            </div>
+
+            <!-- Form -->
+            <form method="post" class="form-horizontal" action="">
+
+            <!-- Rule -->
+            <div ng-repeat="rule in rules">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="height:30px;">
+                        <label>Rule</label>
+                        <button type="button" class="btn btn-primary" style="float:right;" ng-click="deleteElement(rule.$$hashKey, rules);">删除</button>
+                        <button type="button" class="btn btn-primary" style="float:right;margin-right: 10px;" ng-click="showRule(rule);" ng-show="!rule.showRule">显示</button>
+                        <button type="button" class="btn btn-primary" style="float:right;margin-right: 10px;" ng-click="hideRule(rule);" ng-show="rule.showRule">隐藏</button>
+                    </h3>
+                </div>
+
+                <div class="panel-body">
+                    <div class="panel">
+                        <div class="form-group">
+                            <!-- ID -->
+                            <!-- 页面显示内容必须为8位数字（如“15122714”）,且不能与其他规则的id冲突；xml中的内容与页面显示内容相同 -->
+                            <div class="col-sm-2"><input type="text" class="form-control" placeholder="id" ng-model="rule.id" ng-disabled="!rule.isNewRule"/></div>
+                            <!-- Package Name -->
+                            <!-- 1、页面内容为“系统应用”或“System”；xml里对应值为S
+                                 2、页面内容为“所有应用”或“All”；xml里对应值为A
+                                 3、页面内容为64byte个以内的字符串（如com.android.systemui）；xml中的内容与页面显示内容相同 -->
+                            <div class="col-sm-3"><input type="text" class="form-control" placeholder="process name" ng-model="rule.pn" ng-disabled="!rule.isNewRule"/></div>
+                            <!-- Backtrace -->
+                            <!-- 页面内容为字符串（如“ioctl”）；xml中的内容与页面显示内容相同 -->
+                            <div class="col-sm-2"><input type="text" class="form-control" placeholder="{{showBtPlaceHolderInfo(rule.isNewRule);}}" ng-model="rule.bt" ng-disabled="!rule.isNewRule"/></div>
+                            <!-- Count -->
+                            <div class="col-sm-2">
+                                 <input type="text" class="form-control" style="margin-left:75px;" ng-model="rule.count"/></div>
+                            <div class="col-sm-3">
+                                 <button type="button" class="btn btn-success" style="margin-left:50px;" ng-click="addCount(rule);">+</button>
+                                 <button type="button" class="btn btn-danger"  ng-click="minusCount(rule);">-</button>
+                                 <button type="button" class="btn btn-primary" ng-click="saveCount(rule.id, rule.count, rule);">保存</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="rule.showRule">
+                            <!-- Core Dump -->
+                            <!-- 有Default、Full、None三个值之一；Default时对应xml中的值为D，Full时为F,None是删除xml中的tag -->
+                            <!-- <core/> 表示default, <core type="full"/>表示full, 无tag表示无状态 -->
+                            <div class="col-sm-3">
+                                <label>core</label>
+                                <select id="core" name="core" class="form-control" ng-model="rule.core">
+                                    <option ng-repeat="core in cores" value="{{core.value}}">{{core.name}}</option>
+                                </select>
+                            </div>
+
+                            <!-- Java Stack -->
+                            <!-- 只有两个状态YES or NO；YES时xml中的值为Y，NO时xml中删除对应tag；默认值为NO -->
+                            <!-- <jstack/> 表示current, <jstack type="all"/>表示all, 无tag表示无状态-->
+                            <div class="col-sm-3">
+                                <label>jstack</label>
+                                <select id="jstack" name="jstack" class="form-control" ng-model="rule.jstack" >
+                                    <option ng-repeat="jstack in jstacks" value="{{jstack.value}}">{{jstack.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="rule.showRule">
+                            <div class="col-sm-12">
+                                <label>maps&nbsp;</label><input type="checkbox" id="maps"   ng-checked="isChecked(rule.maps);"  ng-click="editCheckboxData($event, rule);" />&nbsp;&nbsp;&nbsp;
+                                <label>tomb&nbsp;</label><input type="checkbox" id="tomb"   ng-checked="isChecked(rule.tomb);"  ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>mlog&nbsp;</label><input type="checkbox" id="mlog" ng-checked="isChecked(rule.mlog);" ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>slog&nbsp;</label><input type="checkbox" id="slog" ng-checked="isChecked(rule.slog);" ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>elog&nbsp;</label><input type="checkbox" id="elog" ng-checked="isChecked(rule.elog);" ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>rlog&nbsp;</label><input type="checkbox" id="rlog" ng-checked="isChecked(rule.rlog);" ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>klog&nbsp;</label><input type="checkbox" id="klog" ng-checked="isChecked(rule.klog);" ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>ps&nbsp;</label><input   type="checkbox" id="ps"     ng-checked="isChecked(rule.ps);"    ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>lsof&nbsp;</label><input type="checkbox" id="lsof"   ng-checked="isChecked(rule.lsof);"  ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                                <label>spec&nbsp;</label><input type="checkbox" id="spec"   ng-checked="isChecked(rule.spec);"  ng-click="editCheckboxData($event, rule);"/>&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- File -->
+                    <!-- file有path和keyword两种。内容都是字符串。action有"dump"和"stat"两种，默认为dump。
+                         file本身是非必选项，但一旦指定file，则path（256字节）或keyword（32字节）必须选一个，action和后面字符串都不能是空 -->
+                    <div class="panel panel-default" ng-show="rule.showRule">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="height:30px;">file
+                                <button type="button" class="btn btn-primary" style="float:right" id="btn_addfile" name="btn_addfile" ng-click="addFile(rule.formatData.fileInfo);">增加</button>
+                            </h3>
+                        </div>
+                        <div class="panel-body" id="copyfiletemplate" name="copyfiletemplate" ng-repeat="fileBaseInfo in rule.formatData.fileInfo">
+                            <div class="form-group">
+                                <div class="col-xs-3">
+                                    <select class="form-control" ng-model="fileBaseInfo.keywordpath">
+                                        <option ng-repeat="e in filekewordpath" value="{{e.value}}">{{e.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-3">
+                                    <select class="form-control" ng-model="fileBaseInfo.dumpstat">
+                                        <option ng-repeat="e in filedumpstat" value="{{e.value}}">{{e.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" placeholder="File信息" ng-model="fileBaseInfo.text"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button type="button" class="btn btn-primary" style="float:right" id="btn_deletefile" name="btn_deletefile" ng-click="deleteElement(fileBaseInfo.$$hashKey, rule.formatData.fileInfo);">删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Filter -->
+                    <!-- filter有三个子元素，model，device，verson，都是可选的，不是必须的。
+                         model：取值如MI 3W，MI 4LTE
+                         device：取值如aries，cancro
+                         version：无取值。但是version有三个属性值，也都是可选的，dev，alpha，stable，分别对应开发版，体验版，稳定版。
+                                  三个属性值取值为有两种：1、各个版的版本号，格式为\d{1,2}\.\d{1,2}\.\d{1,2}，如6.2.14。2、none，表示不取该版本。 -->
+                    <div class="panel panel-default" ng-show="rule.showRule">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="height:30px;">filter
+                                <button type="button" class="btn btn-primary" style="float:right" id="btn_addfile" name="btn_addfilter" ng-click="addFilter(rule);" ng-show="!rule.showFilter">增加</button>
+                                <button type="button" class="btn btn-primary" style="float:right" id="btn_addfile" name="btn_deletefilter" ng-click="deletefilter(rule);" ng-show="rule.showFilter">删除</button>
+                            </h3>
+                        </div>
+                        <div class="panel-body" ng-show="rule.showFilter">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" placeholder="Model, 如MI 3W" ng-model="rule.filter.model"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" placeholder="Device, 如aries" ng-model="rule.filter.device"/>
+                                </div>
+                            </div>
+                            <HR style="border:1 dashed #987cb9" width="100%" color="#987cb9" SIZE="1">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" placeholder="Alpha Version" ng-model="rule.filter.version._alpha"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" placeholder="Dev Version" ng-model="rule.filter.version._dev"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" placeholder="Stable Version" ng-model="rule.filter.version._stable"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- show the message when save count -->
+            <div class="alert alert-danger" role="alert" ng-hide="'' == rule.errorMessage">
+                <a href="" class="alert-link" style="text-decoration:none;">{{rule.errorMessage}}</a>
+            </div>
+            <div class="alert alert-success" role="alert" ng-hide="'' == rule.saveSuccess">
+                <a href="" class="alert-link" style="text-decoration:none;">{{rule.saveSuccess}}</a>
+            </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-4">
+                    <button type="button" class="btn btn-primary" name="save" ng-click="submitRules(rules);">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" id="btn_addrule" name="btn_addrule" ng-click="addRule();">增加一条新Rule</button>
+                </div>
+            </div>
+
+            <!-- show the message when save rules-->
+            <div class="alert alert-danger" role="alert" ng-hide="'' == errorMessage">
+                <a href="" class="alert-link" style="text-decoration:none;">{{errorMessage}}</a>
+            </div>
+            <div class="alert alert-success" role="alert" ng-hide="'' == saveSuccess">
+                <a href="" class="alert-link" style="text-decoration:none;">{{saveSuccess}}</a>
+            </div>
+
+            </form>
+
+            <!-- This is only used to save the result which we will submit to backend -->
+            <div class="form-group">
+                <label for="name">新生成的XML内容如下：</label>
+                <textarea class="form-control" rows="10" ng-model="finalXml"></textarea>
+            </div>
+        </div>
+    </div>
+</div>

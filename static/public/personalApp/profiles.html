@@ -1,0 +1,127 @@
+<nav class="navbar navbar-default navbar-static-top" ng-controller="ProfileCtr">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/regions">云控个人空间</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">Bucket 配置</p></li>
+      <li><p class="navbar-text">{{region}}</p></li>
+      <li><p class="navbar-text">{{bucket}}</p></li>
+      <li><a href="#/regions/{{region}}"><span class="glyphicon glyphicon-arrow-up"></span></a>
+    </ul>
+  </div>
+</nav>
+
+<div class="container" ng-controller="ProfileCtr">
+  <div class="checkbox text-right">
+    <p><input type="checkbox" confirm-click="" confirmation="切换模式所做更改不转移；切换到JSON模式时不合法result置为空" ng-model="useJson">JSON模式</p>
+  </div>
+  <h4>分级推送配置</h4>
+  <div class="row" style="margin-bottom: 6px">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-hover" id="testTable">
+        <thead>
+        <tr>
+          <th class="text-center col-xs-2">priority</th>
+          <th class="text-center col-xs-8">type regexp</th>
+          <th class="text-center col-xs-2">
+            edit
+            <button class="btn btn-xs btn-default" ng-click="addProfile('test', 0)"><i class="glyphicon glyphicon-plus"></i></button>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat-start="c in profileConfigs['test']">
+            <td rowspan=2>
+              <form name="testPriorityForm" ng-class="{'has-error': !testPriorityForm.number.$valid}">
+                <input type="number" name="number" ng-model="c.priority" ng-pattern="/^\d+$/" class="form-control" name="priority" placeholder="priority"/>
+              </form>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="c.pushStrategy" name="testModeOptions_{{$index}}" value="INTERNAL">内部用户
+                </label>
+              </div>
+              <div class="radio">
+                <form class="form-inline" name="testPushNumberForm" ng-class="{'has-error': c.pushStrategy == 'MVNUMBER' && !testPushNumberForm.number.$valid}">
+                  <label>
+                    <input type="radio" ng-model="c.pushStrategy" name="testModeOptions_{{$index}}" value="MVNUMBER">限制数量
+                    <input type="number" class="form-control" name="number" ng-model="c.pushNumber" ng-pattern="/^[\-\d]+$/" ng-disabled="c.pushStrategy != 'MVNUMBER'"/>
+                  </label>
+                </form>
+              </div>
+              <div class="radio">
+                <form class="form-inline" name="testPushPercentForm" ng-class="{'has-error': c.pushStrategy == 'PERCENTAGE' && !testPushPercentForm.number.$valid}">
+                  <label>
+                    <input type="radio" ng-model="c.pushStrategy" name="testModeOptions_{{$index}}" value="PERCENTAGE" />限制比例
+                    <input type="number" class="form-control" name="number" ng-model="c.pushPercent" placeholder="0.1" ng-pattern=/^0\.[\d]+$/ ng-disabled="c.pushStrategy != 'PERCENTAGE'"/>
+                  </label>
+                </form>
+              </div>
+            </td>
+            <td>
+              <input type="text" ng-model="c.type" class="form-control" name="type" placeholder="type regexp"/>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-primary btn-sm" ng-click="addProfile('test', $index + 1)"><i class="glyphicon glyphicon-plus"></i></button>
+              <button class="btn btn-danger btn-sm" ng-click="delProfile('test', $index)"><i class="glyphicon glyphicon-minus"></i></button>
+            </td>
+          </tr>
+          <tr ng-repeat-end id="testTemplate2">
+            <td colspan=2>
+              <textarea ng-if="!useJson" ng-show="!useJson" ng-model="c.result" class="form-control" rows="5" placeholder="result"></textarea>
+              <div ng-if="useJson" ng-show="useJson" ng-jsoneditor ng-model="c.json" options="jsoneditor.options" style="with:auto; height:200px;"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr />
+  <h4>全量用户配置</h4>
+  <div class="row" style="margin-bottom: 6px">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th class="text-center col-xs-2">priority</th>
+          <th class="text-center col-xs-8">type regexp</th>
+          <th class="text-center col-xs-2">
+            edit
+            <button class="btn btn-xs btn-default" ng-click="addProfile('norm', 0)"><i class="glyphicon glyphicon-plus"></i></button>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat-start="c in profileConfigs['norm']">
+          <td rowspan=2>
+            <form name="normPriorityForm" ng-class="{'has-error': !normPriorityForm.number.$valid}">
+              <input type="number" name="number" ng-model="c.priority" ng-pattern="/^\d+$/" class="form-control" name="priority", placeholder="priority"/>
+            </form>
+          <td>
+            <input ng-model="c.type" type="text" class="form-control" name="type" placeholder="type regexp"/>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-primary btn-sm" ng-click="addProfile('norm', $index + 1)"><i class="glyphicon glyphicon-plus"></i></button>
+            <button class="btn btn-danger btn-sm" ng-click="delProfile('norm', $index)"><i class="glyphicon glyphicon-minus"></i></button>
+          </td>
+        </tr>
+        <tr ng-repeat-end>
+          <td colspan=2>
+            <textarea ng-if="!useJson" ng-show="!useJson" ng-model="c.result" class="form-control" rows="3" placeholder="result"></textarea>
+            <div ng-if="useJson" ng-show="useJson" ng-jsoneditor ng-model="c.json" options="jsoneditor.options" style="with:auto; height:200px;"></div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-primary" confirm-click="submitConfig()" confirmation="将生成新的配置文件，不完整配置将被忽略，请将其通过git提交">提交生成文件</button>
+      <div class="pull-right checkbox-inline">
+        <p><input type="checkbox" confirm-click="" confirmation="若选择FileProfile，将会自动将profile生成文件上传到miuifs，并自动生成profile对应hash及url" ng-model="useFileProfile">FileProfile模式</p>
+      </div>
+    </div>
+  </div>
+</div>

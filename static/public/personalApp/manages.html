@@ -1,0 +1,75 @@
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/regions">云控个人空间</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#/regions"><span class="glyphicon glyphicon-home"></span></a>   </ul>
+  </div>
+</nav>
+
+<div class="container">
+    <div class="col-xs-6">
+      <h4 class="sub-header">Change Number <small> 基于代码库中最新配置验证该change</small></h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th class="text-center">Change Number</th>
+            <th class="text-center">环境</th>
+            <th class="text-center col-xs-3">确认</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              <form name="changeNumberForm" ng-class="{'has-error': !changeNumberForm.changeInput.$valid}">
+                <input type="text" class="form-control text-center" name="changeInput" placeholder="000000" ng-pattern=/^\d{6,6}$/ ng-model="changeNumber"/>
+              </form>
+            </td>
+            <td class="text-center">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-model="useGlobal" /> 国外配置
+                </label>
+              </div>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-default" ng-show="!changeNumber || !changeNumberForm.changeInput.$valid" ng-disabled="true"><span class="glyphicon glyphicon-ok"></span></button>
+              <button class="btn btn-sm btn-success" ng-show="changeNumber && changeNumberForm.changeInput.$valid" confirm-click="updateChange(changeNumber, useGlobal)" confirmation="确定使用该change吗?"><span class="glyphicon glyphicon-ok"></span></button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-xs-6">
+      <h4 class="sub-header">全部重置 <small> 从代码库拉取最新配置并更新数据库中所有profile</small></h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th class="text-center">输入验证</th>
+            <th class="text-center col-xs-3">确认重置</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              <form name="resetVerifyForm" ng-class="{'has-error': !resetVerifyForm.resetInput.$valid}">
+                <input type="text" class="form-control text-center" name="resetInput" placeholder="确认重置" ng-pattern=/^确认重置$/ ng-model="resetInput"/>
+              </form>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-default" ng-show="!resetInput || !resetVerifyForm.resetInput.$valid" ng-disabled="true"><span class="glyphicon glyphicon-ok"></span></button>
+              <button class="btn btn-sm btn-success" ng-show="resetInput && resetVerifyForm.resetInput.$valid" confirm-click="resetProfile()" confirmation="!!! 确定全部重置吗？ !!!"><span class="glyphicon glyphicon-ok"></span></button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+</div>

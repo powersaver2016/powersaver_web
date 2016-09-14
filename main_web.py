@@ -22,6 +22,7 @@ urls = [
     (r"/login", 'web.index.LoginHandler'),
     (r"/logout", 'web.index.LogoutHandler'),
     (r"/", 'web.index.IndexHandler'),
+    (r"/powersaver", 'web.power.ConfigHandler'),
 
     ('.*', 'web.index.PageNotFoundHandler'),
 ]

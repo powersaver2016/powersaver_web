@@ -1,0 +1,39 @@
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <span class="navbar-brand">云控个人空间</span>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#/manages">管理页面 <span class="glyphicon glyphicon-cog"></span></a>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Region名称</th>
+            <th class="col-xs-2">编辑</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="r in regions">
+            <td class="text-center">{{r}}</td>
+            <td class="text-center">
+              <a href="#/regions/{{r}}"><button class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil"></span></button></a>
+              <button class="btn btn-sm btn-danger" confirm-click="deleteRegion(r)" confirmation="确定删除 {{r}} 吗？"><span class="glyphicon glyphicon-remove"></span></button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="text" class="form-control" placeholder="新建Region" ng-model="newRegionName"/></td>
+            <td class="text-center"><button class="btn btn-sm btn-success" ng-disabled="!newRegionName" confirmation="不要申请太多，确定新增吗？" confirm-click="addRegion(newRegionName)"><span class="glyphicon glyphicon-plus"></span></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

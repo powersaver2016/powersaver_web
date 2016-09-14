@@ -1,0 +1,154 @@
+<nav class="navbar navbar-default navbar-static-top" ng-controller="BucketCtr">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/regions">云控个人空间</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><p class="navbar-text">{{region}}</p></li>
+      <li><a href="#/regions"><span class="glyphicon glyphicon-home"></span></a>
+    </ul>
+  </div>
+</nav>
+
+<div class="container" ng-controller="BucketCtr">
+
+  <div class="row">
+    <div class="col-xs-6">
+      <h4 class="sub-header">有权限用户</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th class="text-center">用户名</th>
+            <th class="text-center col-xs-2">编辑</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="user in users">
+            <td class="text-center">{{user}}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-danger" confirm-click="deleteUser(user)" confirmation="确定删除 {{user}} 吗？"><span class="glyphicon glyphicon-remove"></span></button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="input-group">
+                <input type="text" class="text-center form-control" placeholder="新增用户" ng-model="newUser"/>
+                <div class="input-group-addon">@xiaomi.com</div>
+              </div>
+            </td>
+            <td class="text-center"><button class="btn btn-sm btn-success" ng-disabled="!newUser" confirmation="新增的用户拥有同等权限，确定新增吗？" confirm-click="addUser(newUser)"><span class="glyphicon glyphicon-plus"></span></button></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-xs-6">
+      <h4 class="sub-header">Sid <small> 每个Region对应一个sid</small></h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th class="text-center">Sid</th>
+            <th class="text-center col-xs-3">编辑</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-if="sid">
+            <td>
+              <input type="text" ng-disabled="!editSid.edit" class="text-center form-control" placeholder="sid" ng-model="sid"/>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-danger" confirm-click="deleteSid(sid)" confirmation="确定删除sid吗？删除后不可使用且无法找回"><span class="glyphicon glyphicon-remove"></span></button>
+              <button class="btn btn-sm btn-default" ng-if="!editSid.edit" ng-click="toggleSid()"><span class="glyphicon glyphicon-pencil"></span></button>
+              <button class="btn btn-sm btn-success" ng-if="editSid.edit" confirm-click="updateSid(sid);toggleSid()" confirmation="确定手动编辑sid吗？强烈建议自动生成sid！"><span class="glyphicon glyphicon-ok"></span></button>
+            </td>
+          </tr>
+          <tr ng-if="!sid">
+            <td colspan="2" class="text-center"><button class="btn btn-sm btn-success" ng-click="newSid()"><span class="glyphicon glyphicon-plus"></span></button></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h4>Buckets</h4>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th class="text-center">Bucket名称</th>
+            <th class="text-center col-xs-4">Bucket类型</th>
+            <th class="text-center col-xs-4">编辑</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="bucket in buckets | orderBy:'type'">
+            <td class="text-center">{{bucket.bucket}}</td>
+            <td class="text-center">{{bucket.type}}</td>
+            <td class="text-center">
+              <a href="{{getConfigUrl(region, bucket.bucket, bucket.type)}}">
+                <button class="btn btn-sm btn-default" ng-disabled="bucket.type != 'BaseProfile'">
+                    <span class="glyphicon glyphicon-pencil" ></span>
+                </button>
+              </a>
+              <button class="btn btn-sm btn-default" ng-click="freshBackups(bucket.bucket)" ng-disabled="bucket.type != 'BaseProfile'"><span class="glyphicon glyphicon-hourglass" ></span></button>
+              <button class="btn btn-sm btn-danger" confirm-click="deleteBucket(bucket.bucket)" confirmation="确定删除 {{bucket.bucket}} 吗？"><span class="glyphicon glyphicon-remove"></span></button>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="text" class="text-center form-control" placeholder="新增Bucket" ng-model="newBucketName"/></td>
+            <td>
+              <select class="form-control" ng-model="newBucketType">
+                <option>BaseProfile</option>
+                <option>BaseCount</option>
+                <option>BaseSet</option>
+                <option>BaseFile</option>
+              </select>
+            </td>
+            <td class="text-center"><button class="btn btn-sm btn-success" ng-disabled="!newBucketName || !newBucketType" ng-click="addBucket(newBucketName, newBucketType)"><span class="glyphicon glyphicon-plus"></span></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div ng-hide="!backupBucket" class="row text-center">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-striped">
+        <caption>
+          Backups：{{backupBucket}} <span ng-click="backupBucket=null" class="glyphicon glyphicon-remove-circle" ></span>
+        </caption>
+        <thead>
+        <tr>
+          <th class="text-center col-xs-2">操作时间</th>
+          <th class="text-center col-xs-2">操作者</th>
+          <th class="text-center col-xs-2">操作来源</th>
+          <th class="text-center col-xs-2">备份ID</th>
+          <th class="text-center col-xs-2">编辑</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="backup in backups | orderBy: '-updateDate'">
+          <td class="text-center">{{backup.updateDate | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td class="text-center">{{backup.username}}</td>
+          <td class="text-center">{{backup.source}}</td>
+          <td class="text-center">{{backup.id}}</td>
+          <td class="text-center">
+            <a href="{{getIdProfileUrl(backup.id)}}">
+              <button class="btn btn-sm btn-default">
+                  <span class="glyphicon glyphicon-eye-open" ></span>
+              </button>
+            </a>
+            <button class="btn btn-sm btn-danger" confirm-click="restoreBackup(backup.id)" confirmation="确定恢复版本 {{backup.id}} 吗？"><span class="glyphicon glyphicon-retweet"></span></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
