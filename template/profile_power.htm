@@ -217,6 +217,61 @@
 
 
 <script>
+function cloneOwn() {
+
+  var obj = arguments[0];
+  if (typeof obj === 'undefined' || obj === null)
+      return {};
+
+  if (typeof obj !== 'object')
+      return obj;
+
+  //第二个参数是属性名称列表，就采用该列表进行刷选
+  //否则就克隆所有属性
+  var attrs = arguments[1];
+  var enable_spec_attr = true;
+  if (!(attrs instanceof Array)) {
+      //console.log(attrs);
+      attrs = obj;
+      enable_spec_attr = false;
+  }
+
+  var result = {};
+  var i;
+  for (i in attrs) {
+      attr = enable_spec_attr? attrs[i]: i;
+      //console.log(attr);
+      if (obj.hasOwnProperty(attr)) {
+          if (obj[attr] instanceof Array) {
+              result[attr] = cloneArray(obj[attr]);
+          }
+          else if (typeof obj[attr] === 'object') {
+              result[attr] = cloneOwn(obj[attr]);
+          } else {
+              result[attr] = obj[attr];
+          }
+      }
+  }
+
+  return result;
+}
+
+var app_default_data = {
+    number: '',
+    app_name: '',
+    set_data_connection: false,
+    set_location: false,
+    app_delay: '',
+    set_delay_count: '',
+    set_data_kb: '',
+    set_inactive_count: '',
+    set_location_delay: '',
+    sensor_delay: '',
+    kill_delay: '',
+    location_delay_hot: '',
+    kill_delay_hot: '',
+};
+
 var app_columns = [
 {
     title: 'No.',
@@ -327,9 +382,41 @@ var app_columns = [
     align: 'center',
     valign: 'middle',
     width:"10%",
-    formatter: "opFormatter",
+    formatter: "operateFormatter",
+    events: "operateEvents",
 },
 ];
+
+function operateFormatter(value, row, index) {
+    // console.log(value);
+    // console.log(row);
+    // console.log('index:' + index);
+    return [
+        '<a class="insert" href="javascript:void(0)" title="Insert">',
+        '<i class="glyphicon glyphicon-plus"></i>',
+        '</a>  ',
+        '<a class="remove" href="javascript:void(0)" title="Remove">',
+        '<i class="glyphicon glyphicon-minus"></i>',
+        '</a>'
+    ].join('');
+}
+
+window.operateEvents = {
+
+    'click .insert': function (e, value, row, index) {
+        console.log('You click like action, row: ' + JSON.stringify(row));
+        $("#appList").bootstrapTable('insertRow', {index: index, row: app_default_data});
+    },
+    'click .remove': function (e, value, row, index) {
+        console.log(row);
+        if (confirm("確定刪除吗？")) {
+            $("#appList").bootstrapTable('remove', {
+                field: 'app_name',
+                values: [row.app_name]
+            });
+        }
+    }
+};
 
 $("#appList").bootstrapTable({columns:app_columns});
 
@@ -348,18 +435,6 @@ var refresh = function() {
 }
 
 refresh();
-
-function nameFormatter(value) {
-    return '<a href="https://github.com/wenzhixin/' + value + '">' + value + '</a>';
-}
-
-function textFormatter(value) {
-    return '<input type="text">';
-}
-
-function opFormatter(value) {
-    return '<button class="btn btn-sm btn-danger deleteRow" ><i class="glyphicon glyphicon-minus"></i></button>&nbsp;&nbsp;<button class="btn btn-sm btn-success addRow" ><i class="glyphicon glyphicon-plus"></i></button>';
-}
 
 function checkboxFormatter(value) {
     return '<input type="checkbox"' + (value ? " checked " : "")  + '>';
@@ -422,6 +497,7 @@ function popPrioritys(prioritys) {
     $.each(prioritys, function() {
         select.append($('<option/>').val(this).text(this));
     });
+    $('#prioritySelect').val(prioritys[0]);
     popTable();
 };
 
@@ -456,6 +532,7 @@ function popRegions(regions) {
             select.append($('<option/>').val(this).text(this));
         }
     });
+    $('#regionSelect').val(regions[0]);
 };
 
 function popBuckets(region, buckets) {
@@ -466,6 +543,7 @@ function popBuckets(region, buckets) {
     $.each(bucketList, function() {
         select.append($('<option/>').val(JSON.stringify(this)).text(this.bucket));
     });
+
     // getServerConfig();
 };
 
@@ -533,27 +611,14 @@ function fillFeatureTable(featureTable, priority, type, result) {
 };
 
 function convertJsonItem(item, index) {
-    var data = {
-        number: index,
-        app_name: item.app_name,
-        set_data_connection: false,
-        set_location: false,
-        app_delay: '',
-        set_delay_count: '',
-        set_data_kb: '',
-        set_inactive_count: '',
-        set_location_delay: '',
-        sensor_delay: '',
-        kill_delay: '',
-        location_delay_hot: '',
-        kill_delay_hot: '',
-    };
+    var data = cloneOwn(app_default_data);
+    data['number'] = index;
+    data['app_name'] = item.app_name;
 
     item.action_list.forEach(function(action) {
         data[action.action_key] = action.action_value;
     });
 
-    // console.log(data);
     return data;
 }
 
@@ -566,24 +631,8 @@ function fillAppTable(appTable, result) {
     for (; index < appList.length; index++) {
         data = convertJsonItem(appList[index], index);
         dataList.push(data);
-        // $("#appList").bootstrapTable('append', data);
     }
     $("#appList").bootstrapTable('load', dataList);
-    // for (; index < appList.length; index++) {
-    //     data = convertJsonItem(appList[index], index);
-    //     $("#appList").bootstrapTable('append', data);
-    // }
-    // appList.forEach(function(item) {
-    //     data = convertJsonItem(item, index++);
-    //     if (index > 50) {
-    //         break;
-    //     }
-    //     $("#appList").bootstrapTable('append', data);
-    // });
-    // console.log(dataList);
-
-    // fillData($(appTable), dataList);
-    // if (appList.length < 1) {addRowToTable(appTable);}
 };
 
 </script>

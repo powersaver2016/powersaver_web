@@ -113,10 +113,12 @@ window.operateEvents = {
     },
     'click .remove': function (e, value, row, index) {
         console.log(row);
-        $table.bootstrapTable('remove', {
-            field: 'name',
-            values: [row.name]
-        });
+        if (confirm("確定刪除吗？")) {
+            $table.bootstrapTable('remove', {
+                field: 'name',
+                values: [row.name]
+            });
+        }
     }
 };
 
