@@ -7,18 +7,19 @@
     <title>Profile</title>
 
     <link href="static/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/public/css/bootstrap-theme.min.css" rel="stylesheet">
     <!--bootstrap-table-->
-    <link rel="stylesheet" href="static/public/css/bootstrap-table.min.css">
-    <link rel="stylesheet" href="static/public/css/bootstrap-editable.css">
+    <link rel="stylesheet" href="/static/public/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/static/public/css/bootstrap-editable.css">
 
     <script src="static/public/js/jquery.min.js"></script>
     <script src="static/public/js/bootstrap.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="static/public/js/bootstrap-table.js"></script>
-    <script src="static/public/js/bootstrap-table-editable.js"></script>
-    <script src="static/public/js/bootstrap-editable.js"></script>
-    <script src="static/public/js/bootstrap-table-export.js"></script>
+    <script src="/static/public/js/bootstrap-editable.js"></script>
+    <script src="/static/public/js/bootstrap-editable2.js"></script>
+    <script src="/static/public/js/bootstrap-table.js"></script>
+    <script src="/static/public/js/bootstrap-table-export.js"></script>
 
     <style>
         .container {
@@ -202,10 +203,30 @@
                         data-pagination="true"
                         data-search="true"
                         data-show-refresh="true"
+                        data-detail-view="true"
                         data-show-toggle="true"
                         data-show-export="true"
                         data-page-size="15"
                     >
+                        <thead>
+                        <tr>
+                            <th data-field="number" data-align="center" data-width="5%">No.</th>
+                            <th data-field="app_name" data-width="25%" data-align="center" data-editable="true">app</th>
+                            <th data-field="set_data_connection" data-align="center" data-width="8%" data-formatter="checkboxFormatter">data</th>
+                            <th data-field="set_location" data-align="center" data-width="8%" data-formatter="checkboxFormatter">gps</th>
+
+                            <th data-field="app_delay" data-formatter="nameFormatter">delay</th>
+                            <th data-field="set_delay_count" data-formatter="nameFormatter">dcount</th>
+                            <th data-field="set_data_kb" data-formatter="nameFormatter">data_kb</th>
+                            <th data-field="set_inactive_count" data-formatter="nameFormatter">in_count</th>
+                            <th data-field="set_location_delay" data-formatter="nameFormatter">g_delay</th>
+                            <th data-field="sensor_delay" data-formatter="nameFormatter">s_delay</th>
+                            <th data-field="kill_delay" data-formatter="nameFormatter">k_delay</th>
+                            <th data-field="location_delay_hot" data-formatter="nameFormatter">g_delay_hot</th>
+                            <th data-field="kill_delay_hot" data-formatter="nameFormatter">k_delay_hot</th>
+                            <th data-field="operation" data-width="10%" data-align="center" data-formatter="opFormatter">edit</th>
+                        </tr>
+                        </thead>
                     </table>
                 </td>
              </tr>
@@ -217,121 +238,6 @@
 
 
 <script>
-var app_columns = [
-{
-    title: 'No.',
-    field: "number",
-    align: 'center',
-    valign: 'middle',
-    width:"5%",
-},
-{
-    title: 'app',
-    field: "app_name",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'data',
-    field: "set_data_connection",
-    align: 'center',
-    valign: 'middle',
-    formatter: "checkboxFormatter",
-    width:"8%",
-},
-{
-    title: 'gps',
-    field: "set_location",
-    align: 'center',
-    valign: 'middle',
-    formatter: "checkboxFormatter",
-    width:"8%",
-},
-{
-    title: 'delay',
-    field: "app_delay",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'dcount',
-    field: "set_delay_count",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'data_kb',
-    field: "set_data_kb",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'in_count',
-    field: "set_inactive_count",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'g_delay',
-    field: "set_location_delay",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 's_delay',
-    field: "sensor_delay",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'k_delay',
-    field: "kill_delay",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'g_delay_hot',
-    field: "location_delay_hot",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'k_delay_hot',
-    field: "kill_delay_hot",
-    align: 'center',
-    valign: 'middle',
-    editable: true,
-    width:"5%",
-},
-{
-    title: 'option',
-    field: "op",
-    align: 'center',
-    valign: 'middle',
-    width:"10%",
-    formatter: "opFormatter",
-},
-];
-
-$("#appList").bootstrapTable({columns:app_columns});
 
 // start
 var regions = {{c['regions']}};

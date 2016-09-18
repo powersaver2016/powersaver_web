@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)http://issues.wenzhixin.net.cn/bootstrap-table/extensions/editable.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Editable</title>
+
+    <link rel="stylesheet" href="./Editable_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./Editable_files/bootstrap-table.css">
+    <link rel="stylesheet" href="./Editable_files/bootstrap-editable.css">
+
+    <script src="./Editable_files/jquery.min.js"></script>
+    <script src="./Editable_files/bootstrap.min.js"></script>
+    <script src="./Editable_files/bootstrap-table.js"></script>
+    <script src="./Editable_files/bootstrap-table-editable.js"></script>
+    <script src="./Editable_files/bootstrap-editable.js"></script>
+
+</head>
+<body style="">
+    <div class="container">
+        <h1>Editable</h1>
+        <div id="toolbar">
+            <button id="button" class="btn btn-default">insertRow</button>
+        </div>
+        <table id="table"
+               data-toolbar="#toolbar"
+               data-toggle="table"
+               data-pagination="true">
+        </table>
+    </div>
+
+<script>
+var $table = $('#table'),
+    $button = $('#button');
+
+var columns = [
+{
+    title: 'ID',
+    field: "id",
+    align: 'center',
+},
+{
+    title: 'Item Name',
+    field: "name",
+    align: 'center',
+    editable: true,
+},
+{
+    title: 'Item Price',
+    field: "price",
+    align: 'center',
+    editable: {
+        type: 'text',
+        title: 'Item Price',
+        validate: function (value) {
+            value = $.trim(value);
+            if (!value) {
+                return 'This field is required';
+            }
+            if (!/^\$/.test(value)) {
+                return 'This field needs to start width $.'
+            }
+            var data = $table.bootstrapTable('getData'),
+                index = $(this).parents('tr').data('index');
+            console.log(data[index]);
+            return '';
+        }
+    },
+},
+{
+    title: 'operate',
+    field: "op",
+    align: 'center',
+    valign: 'middle',
+    width:"10%",
+    events: "operateEvents",
+    formatter: "operateFormatter",
+},
+];
+
+var data = [
+{
+    id: "1",
+    name: 526,
+    price: 123,
+    // op: "",
+},
+{
+    id: "2",
+    name: "",
+    price: 100,
+    // op: "",
+}
+];
+
+function operateFormatter(value, row, index) {
+    // console.log(value);
+    // console.log(row);
+    // console.log('index:' + index);
+    return [
+        '<a class="insert" href="javascript:void(0)" title="Insert">',
+        '<i class="glyphicon glyphicon-plus"></i>',
+        '</a>  ',
+        '<a class="remove" href="javascript:void(0)" title="Remove">',
+        '<i class="glyphicon glyphicon-minus"></i>',
+        '</a>'
+    ].join('');
+}
+
+window.operateEvents = {
+    'click .insert': function (e, value, row, index) {
+        var emptyRow = {name: "", price: "", id: ""};
+        $table.bootstrapTable('insertRow', {index: index, row: emptyRow});
+        // alert('You click like action, row: ' + JSON.stringify(row));
+    },
+    'click .remove': function (e, value, row, index) {
+        console.log(row);
+        $table.bootstrapTable('remove', {
+            field: 'name',
+            values: [row.name]
+        });
+    }
+};
+
+// $(".insert").click(function(event) {
+//     console.log("insert");
+//     var tr = this.parentNode.parentNode;
+//     console.log(tr);
+//     var index = tr.getAttribute("data-index");
+//     var emptyRow = {name: "1", price: 1,id: "1"};
+//     $table.bootstrapTable('insertRow', {index: index, row: emptyRow});
+// });
+
+
+
+function opFormatter(value) {
+    return '<button class="btn btn-sm btn-danger deleteRow" ><i class="glyphicon glyphicon-minus"></i></button>&nbsp;&nbsp;<button class="btn btn-sm btn-success addRow" ><i class="glyphicon glyphicon-plus"></i></button>';
+}
+
+function checkboxFormatter(value) {
+    return '<input type="checkbox"' + (value ? " checked " : "")  + '>';
+}
+
+$(function () {
+	$button.click(function () {
+		var randomId = 100 + ~~(Math.random() * 100);
+		$table.bootstrapTable('insertRow', {
+			index: 1,
+			row: {
+				id: randomId,
+				name: 'Item ' + randomId,
+				price: '$' + randomId
+			}
+		});
+	});
+
+
+});
+
+    $('#table').bootstrapTable({
+      columns:columns,
+      data:data
+    });
+</script>
+
+</body>
+
+</html>
