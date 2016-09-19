@@ -15,6 +15,7 @@ import tornado.locale
 
 from _module._lib.log import Log
 from _module._lib.mgdb import MgDB
+from _module._lib.mem import Mem
 
 import config_base
 import web
@@ -25,6 +26,9 @@ urls = [
     (r"/logout", 'web.index.LogoutHandler'),
     (r"/", 'web.index.IndexHandler'),
     (r"/powersaver", 'web.power.ConfigHandler'),
+    (r"/regions/power", 'web.power.PowerHandler'),
+    (r"/regions/md5", 'web.power.MD5Handler'),
+
 
     ('.*', 'web.index.PageNotFoundHandler'),
 ]
@@ -51,8 +55,12 @@ if __name__ == "__main__":
     sys.setdefaultencoding("utf-8")
 
     Log.start(config_base.log['path'], config_base.log['level'])
+    Mem.start(config_base.store['memcached_user']['host'],
+        config_base.store['memcached_user']['port'],
+        config_base.store['memcached_user']['user'],
+        config_base.store['memcached_user']['pwd'])
     MgDB.start(config_base.store['mongodb']['host'], config_base.store['mongodb']['port'])
-    MgDB.insert_common()
+    # MgDB.save_power('power123')
 
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(application, xheaders = True)

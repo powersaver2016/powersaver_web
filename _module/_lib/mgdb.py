@@ -56,10 +56,54 @@ class MgDB:
         return cls._db
 
     @classmethod
-    def insert_common(cls):
+    def get_power(cls):
         db = cls.get_db()
-        posts = db.common
-        common = {"common":"result.....123"}
-        post_id = posts.insert_one(common).inserted_id
-        Log.info('insert_common(%s) Ok.', post_id)
-        return post_id
+        results = db.common.find()
+        if results.count() > 0:
+            one = results[0]
+            return one['power']
+        else:
+            return ''
+         
+
+                
+    @classmethod
+    def save_power(cls, power):
+        db = cls.get_db()
+        results = db.common.find()
+        if results.count() > 0:
+            one = results[0]
+            db.common.update({'_id':one['_id']}, {'$set': {'power':power}})
+            Log.info('update Ok.')
+        else:
+            common = {"power":power}
+            post_id = db.common.insert_one(common).inserted_id
+            Log.info('insert (%s) Ok.', post_id)
+        return True
+
+
+    @classmethod
+    def get_md5(cls):
+        db = cls.get_db()
+        results = db.md5.find()
+        if results.count() > 0:
+            one = results[0]
+            return one['md5']
+        else:
+            return ''
+         
+
+                
+    @classmethod
+    def save_md5(cls, md5):
+        db = cls.get_db()
+        results = db.md5.find()
+        if results.count() > 0:
+            one = results[0]
+            db.md5.update({'_id':one['_id']}, {'$set': {'md5':md5}})
+            Log.info('update Ok.')
+        else:
+            common = {"md5":md5}
+            post_id = db.md5.insert_one(common).inserted_id
+            Log.info('insert (%s) Ok.', post_id)
+        return True        
