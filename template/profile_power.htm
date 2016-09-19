@@ -137,7 +137,7 @@
                             <th class="text-center">g_delay</th>
                             <th class="text-center">s_delay</th>
                             <th class="text-center">k_delay</th>
-                            <th width="10%" class="text-center">edit</th>
+                            <th width="10%" class="text-center" style="display:none;">edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -160,7 +160,7 @@
                             <td><input type="text" style="text-align:center" class="form-control" name="set_location_delay"/></td>
                             <td><input type="text" style="text-align:center" class="form-control" name="sensor_delay"/></td>
                             <td><input type="text" style="text-align:center" class="form-control" name="kill_delay"/></td>
-                            <td align="center">
+                            <td align="center" style="display:none;">
                                 <button class="btn btn-danger deletePriority" ><i class="glyphicon glyphicon-minus"></i></button>
                                 <button class="btn btn-success addPriority" ><i class="glyphicon glyphicon-plus"></i></button>
                             </td>
@@ -442,6 +442,9 @@ function refresh() {
     popBuckets(null, buckets);
 }
 
+function reload() {
+    window.location.reload();
+}
 
 function feature2Json(key, value) {
     var json = {"group_id":5, "added":"true", "action_key":key, "action_value":value};
@@ -530,9 +533,11 @@ function traversalTable() {
         var appListData = $("#appList").bootstrapTable('getData');
         var appList = [];
         var j = 0;
+        console.log('appListData.length:' + appListData.length);
         for(;j < appListData.length;j++) {
             appList[j] = convertTableItem2Json(appListData[j]);
         }
+        console.log('appList.length:' + appList.length);
 
         result = {"feature_list":featureList, "app_list":appList};
         result["hide_mode"] = hide_mode;
@@ -571,8 +576,11 @@ function postData(url, data, flash, msg) {
         success: function(res) {
             if (res.code !== 0) alert(res.message);
             else {
-                alert('操作成功');
-                if (flash) refresh();
+                
+                if (flash) {
+                    alert('操作成功');
+                    reload();
+                }
             }
         }
     });
@@ -622,13 +630,7 @@ function submit() {
     var type = bucket.type.match(/Base(\w+)/)[1].toLowerCase();
     var url = '/regions/power'
     var md5Url =  '/regions/md5';
-    // var appListData = $("#appList").bootstrapTable('getData');
-    // var appList = [];
-    // var i = 0;
-    // for(;i < appListData.length;i++) {
-    //     appList[i] = convertTableItem2Json(appListData[i]);
-    // }
-    // console.log(JSON.stringify(appList, null, 4));
+
     var data = getAllPrioritiesData();
     // console.log(JSON.stringify(data, null, 4));
     if (data) {
@@ -690,11 +692,7 @@ function readConfigFile(files) {
 }
 
 function clearPriorityList() {
-    // var table = document.getElementById("priorityList");
-    // var total = table.rows.length-2;
-    // for(var i=0;i< total;i++) {
-    //     table.deleteRow(0);
-    // }
+
 };
 
 function parsePrioritys(jsonArray) {
@@ -719,7 +717,7 @@ $('#bucketSelect').on('change', function() {
 $('#prioritySelect').on('change', function() {
     popTable();
 });
-    
+
 function popPrioritys(prioritys) {
     var select = $('#prioritySelect');
     select.empty();
@@ -876,7 +874,7 @@ function fillAppTable(appTable, result) {
     var appList = obj.app_list;
     var dataList = new Array();
     var data;
-    var index = 1;
+    var index = 0;
     for (; index < appList.length; index++) {
         data = convertJson2TableItem(appList[index], index);
         dataList.push(data);

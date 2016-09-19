@@ -19,6 +19,7 @@
         <h1>Editable</h1>
         <div id="toolbar">
             <button id="button" class="btn btn-default">insertRow</button>
+            <button id="getData" class="btn btn-default">getData</button>
         </div>
         <table id="table"
                data-toolbar="#toolbar"
@@ -154,13 +155,17 @@ $(function () {
 		});
 	});
 
+    $("#getData").click(function () {
+        var data = $table.bootstrapTable('getData');
+        alert(JSON.stringify(data));
+    });
 
 });
 
-    $('#table').bootstrapTable({
-      columns:columns,
-      data:data
-    });
+$('#table').bootstrapTable({
+  columns:columns,
+  data:data
+});
 </script>
 
 </body>
