@@ -430,7 +430,13 @@ $("#appList").bootstrapTable({columns:app_columns});
 var regions = {{c['regions']}};
 var buckets = {{c['buckets']}};
 
-var gAllPrioritiesData = JSON.parse({{c['power']}});
+var gAllPrioritiesData;
+try {
+    gAllPrioritiesData = JSON.parse({{c['power']}});
+} catch (e) {
+    gAllPrioritiesData = [];
+}
+
 // var gAllPrioritiesData;
 var gAddPriority = false;
 
@@ -576,7 +582,7 @@ function postData(url, data, flash, msg) {
         success: function(res) {
             if (res.code !== 0) alert(res.message);
             else {
-                
+
                 if (flash) {
                     alert('操作成功');
                     reload();
@@ -793,7 +799,7 @@ function addPriority(priority, type, result) {
         console.log('fillAppTable');
         fillAppTable(appTable, result);
     } else {
-        addRowToTable(appTable);
+        // addRowToTable(appTable);
     }
     // refreshAppTableNumber(appTable);
     return appTable;
