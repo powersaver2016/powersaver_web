@@ -23,7 +23,7 @@ log = {
     'path' : os.path.join(os.path.dirname(__file__), 'logs/web'),
 }
 
-listen_port = 1128
+listen_port = 1987
 session_user = "user_web"
 
 store = {
@@ -62,10 +62,10 @@ store = {
             'app_auth_key': 'coco@app'
         }
     },
-    # 'mongodb' : {
-    #     'host': '127.0.0.1',
-    #     'port': 27017
-    # },
+    'mongodb' : {
+        'host': '127.0.0.1',
+        'port': 27017
+    },
 }
 
 # 线下配置

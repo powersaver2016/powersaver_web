@@ -37,7 +37,7 @@ class MgDB:
             except Exception, e:
                 Log.critical('Mongodb(%s:%s) connect failed. \n %s', host, port, str(e))
                 sys.exit()
-            Log.critical('Mongodb(%s:%s) Ok.', host, port)
+            Log.info('Mongodb(%s:%s) Ok.', host, port)
 
     @classmethod
     def get_client(cls):
@@ -45,4 +45,21 @@ class MgDB:
             cls._client = pymongo.MongoClient(cls._host, cls._port)
         return cls._client
 
+    @classmethod
+    def get_db(cls):
+        if cls._client is None:
+            cls._client = pymongo.MongoClient(cls._host, cls._port)
 
+        if cls._db is None:
+            cls._db = cls._client[cls._db_name]
+
+        return cls._db
+
+    @classmethod
+    def insert_common(cls):
+        db = cls.get_db()
+        posts = db.common
+        common = {"common":"result.....123"}
+        post_id = posts.insert_one(common).inserted_id
+        Log.info('insert_common(%s) Ok.', post_id)
+        return post_id

@@ -14,6 +14,8 @@ import tornado.locale
 
 
 from _module._lib.log import Log
+from _module._lib.mgdb import MgDB
+
 import config_base
 import web
 
@@ -49,6 +51,8 @@ if __name__ == "__main__":
     sys.setdefaultencoding("utf-8")
 
     Log.start(config_base.log['path'], config_base.log['level'])
+    MgDB.start(config_base.store['mongodb']['host'], config_base.store['mongodb']['port'])
+    MgDB.insert_common()
 
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(application, xheaders = True)

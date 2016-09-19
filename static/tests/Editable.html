@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)http://issues.wenzhixin.net.cn/bootstrap-table/extensions/editable.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Editable</title>
+    
+    <link rel="stylesheet" href="./Editable_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./Editable_files/bootstrap-table.css">
+    <link rel="stylesheet" href="./Editable_files/bootstrap-editable.css">
+
+	<script src="./Editable_files/jquery.min.js"></script>
+    <script src="./Editable_files/bootstrap.min.js"></script>
+    <script src="./Editable_files/bootstrap-table.js"></script>
+    <script src="./Editable_files/bootstrap-table-editable.js"></script>
+    <script src="./Editable_files/bootstrap-editable.js"></script>
+
+</head>
+<body style="">
+    <div class="container">
+        <h1>Editable</h1>
+        <table id="table"
+               data-toggle="table"
+               data-pagination="true"
+               data-show-export="true">
+            <thead>
+            <tr>
+                <th data-field="id">ID</th>
+                <th data-field="name" data-editable="true">Item Name</th>
+                <th data-field="price" data-editable="true">Item Price</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+	
+<script>
+var columns = [{
+	title: 'ID',
+    field: "id",
+    align: 'center',
+},
+{
+	title: 'Item Name',
+    field: "name",
+    align: 'center',
+	editable: true,
+},
+{
+	title: 'Item Price',
+    field: "price",
+    align: 'center',
+	editable: {
+		type: 'text',
+		title: 'Item Price',
+		validate: function (value) {
+			value = $.trim(value);
+			if (!value) {
+				return 'This field is required';
+			}
+			if (!/^\$/.test(value)) {
+				return 'This field needs to start width $.'
+			}
+			var data = $table.bootstrapTable('getData'),
+				index = $(this).parents('tr').data('index');
+			console.log(data[index]);
+			return '';
+		}
+	},
+}
+];
+
+var data = [{
+    id: "1",
+    name: 526,
+    price: 123,
+}
+];
+
+$('#table').bootstrapTable({
+  data:data
+});
+</script>
+	
+</body>
+
+</html>
