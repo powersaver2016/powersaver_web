@@ -299,7 +299,8 @@ var app_columns = [
     field: "set_data_connection",
     align: 'center',
     valign: 'middle',
-    formatter: "checkboxFormatter",
+    events: "operateEvents",
+    formatter: "dataCheckboxFormatter",
     width:"8%",
 },
 {
@@ -307,7 +308,8 @@ var app_columns = [
     field: "set_location",
     align: 'center',
     valign: 'middle',
-    formatter: "checkboxFormatter",
+    events: "operateEvents",
+    formatter: "gpsCheckboxFormatter",
     width:"8%",
 },
 {
@@ -408,6 +410,15 @@ function operateFormatter(value, row, index) {
 }
 
 window.operateEvents = {
+    'click .dataCheck': function (e, value, row, index) {
+        row.set_data_connection = !row.set_data_connection;
+        $("#appList").bootstrapTable('updateRow', {index: index, row: row});
+    },
+
+    'click .gpsCheck': function (e, value, row, index) {
+        row.set_location = !row.set_location;
+        $("#appList").bootstrapTable('updateRow', {index: index, row: row});
+    },
 
     'click .insert': function (e, value, row, index) {
         console.log('You click insert action, row: ' + JSON.stringify(row));
@@ -659,6 +670,14 @@ $('#allSubmitBtn').click(function() {
 });
 
 refresh();
+
+function dataCheckboxFormatter(value) {
+    return '<input class="dataCheck" type="checkbox"' + (value ? " checked " : "")  + '>';
+}
+
+function gpsCheckboxFormatter(value) {
+    return '<input class="gpsCheck" type="checkbox"' + (value ? " checked " : "")  + '>';
+}
 
 function checkboxFormatter(value) {
     return '<input type="checkbox"' + (value ? " checked " : "")  + '>';

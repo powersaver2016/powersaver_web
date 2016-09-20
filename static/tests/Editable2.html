@@ -45,6 +45,13 @@ var columns = [
     editable: true,
 },
 {
+    title: 'Data',
+    field: "data",
+    align: 'center',
+    events: "operateEvents",
+    formatter: "checkboxFormatter",
+},
+{
     title: 'Item Price',
     field: "price",
     align: 'center',
@@ -82,13 +89,13 @@ var data = [
     id: "1",
     name: 526,
     price: 123,
-    // op: "",
+    data: true,
 },
 {
     id: "2",
     name: "",
     price: 100,
-    // op: "",
+    data: false,
 }
 ];
 
@@ -107,6 +114,12 @@ function operateFormatter(value, row, index) {
 }
 
 window.operateEvents = {
+    'click .dataCheck': function (e, value, row, index) {
+        row.data = !row.data;
+        console.log(row);
+        $table.bootstrapTable('updateRow', {index: index, row: row});
+    },
+
     'click .insert': function (e, value, row, index) {
         var emptyRow = {name: "", price: "", id: ""};
         $table.bootstrapTable('insertRow', {index: index, row: emptyRow});
@@ -123,14 +136,9 @@ window.operateEvents = {
     }
 };
 
-// $(".insert").click(function(event) {
-//     console.log("insert");
-//     var tr = this.parentNode.parentNode;
-//     console.log(tr);
-//     var index = tr.getAttribute("data-index");
-//     var emptyRow = {name: "1", price: 1,id: "1"};
-//     $table.bootstrapTable('insertRow', {index: index, row: emptyRow});
-// });
+function checkboxFormatter(value) {
+    return '<input class="dataCheck" type="checkbox"' + (value ? " checked " : "")  + '>';
+}
 
 
 
@@ -138,9 +146,6 @@ function opFormatter(value) {
     return '<button class="btn btn-sm btn-danger deleteRow" ><i class="glyphicon glyphicon-minus"></i></button>&nbsp;&nbsp;<button class="btn btn-sm btn-success addRow" ><i class="glyphicon glyphicon-plus"></i></button>';
 }
 
-function checkboxFormatter(value) {
-    return '<input type="checkbox"' + (value ? " checked " : "")  + '>';
-}
 
 $(function () {
 	$button.click(function () {
