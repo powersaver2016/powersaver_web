@@ -3,6 +3,9 @@
 # mac
 .DS_Store
 
+# logs
+.log
+
 # C extensions
 *.so
 
