@@ -1,1 +1,34 @@
 init
+INFO[2016-09-20 08:59:00,379]Getting key powersaver
+DEBUG[2016-09-20 08:59:00,398]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 08:59:00,398]Key not found. Message: Not found
+CRITICAL[2016-09-20 08:59:00,398]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 08:59:00,420]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 08:59:12,111]Getting key 927ec113c3c9e075827ee96400b74c3c
+INFO[2016-09-20 08:59:12,111]Setting/adding/replacing key 927ec113c3c9e075827ee96400b74c3c.
+INFO[2016-09-20 08:59:12,112]Value bytes 251.
+INFO[2016-09-20 08:59:12,129]200 GET / (182.109.240.34) 19.47ms
+INFO[2016-09-20 08:59:24,459]Getting key 927ec113c3c9e075827ee96400b74c3c
+INFO[2016-09-20 08:59:24,460]Setting/adding/replacing key 927ec113c3c9e075827ee96400b74c3c.
+INFO[2016-09-20 08:59:24,461]Value bytes 252.
+WARNING[2016-09-20 08:59:24,461]403 POST /user (182.109.240.34): '_xsrf' argument missing from POST
+WARNING[2016-09-20 08:59:24,473]403 POST /user (182.109.240.34) 13.74ms
+INFO[2016-09-20 09:07:21,264]Getting key 927ec113c3c9e075827ee96400b74c3c
+INFO[2016-09-20 09:07:21,265]Setting/adding/replacing key 927ec113c3c9e075827ee96400b74c3c.
+INFO[2016-09-20 09:07:21,265]Value bytes 251.
+INFO[2016-09-20 09:07:21,267]200 GET / (182.109.240.34) 3.06ms
+INFO[2016-09-20 09:07:33,417]Getting key 927ec113c3c9e075827ee96400b74c3c
+INFO[2016-09-20 09:07:33,425]Setting/adding/replacing key 927ec113c3c9e075827ee96400b74c3c.
+INFO[2016-09-20 09:07:33,425]Value bytes 252.
+INFO[2016-09-20 09:07:33,508]200 GET /powersaver (182.109.240.34) 91.83ms
+INFO[2016-09-20 09:07:33,637]304 GET /static/public/css/bootstrap.min.css (182.109.240.34) 35.82ms
+INFO[2016-09-20 09:07:33,647]304 GET /static/public/css/bootstrap-table.min.css (182.109.240.34) 8.92ms
+INFO[2016-09-20 09:07:33,666]304 GET /static/public/js/jquery.min.js (182.109.240.34) 17.88ms
+INFO[2016-09-20 09:07:33,674]304 GET /static/public/css/bootstrap-editable.css (182.109.240.34) 6.84ms
+INFO[2016-09-20 09:07:33,680]304 GET /static/public/js/bootstrap.min.js (182.109.240.34) 5.78ms
+INFO[2016-09-20 09:07:33,689]304 GET /static/public/js/bootstrap-table.js (182.109.240.34) 6.65ms
+INFO[2016-09-20 09:07:33,702]304 GET /static/public/js/bootstrap-table-editable.js (182.109.240.34) 8.67ms
+INFO[2016-09-20 09:07:33,709]304 GET /static/public/js/bootstrap-editable.js (182.109.240.34) 6.33ms
+INFO[2016-09-20 09:07:33,711]304 GET /static/public/js/bootstrap-table-export.js (182.109.240.34) 1.32ms
+INFO[2016-09-20 09:07:33,719]304 GET /static/public/js/md5.min.js (182.109.240.34) 6.42ms
+INFO[2016-09-20 09:07:33,918]304 GET /static/public/fonts/glyphicons-halflings-regular.woff2 (182.109.240.34) 10.18ms
