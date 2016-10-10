@@ -6,13 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Profile</title>
 
-    <link href="static/public/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/public/css/bootstrap.min.css">
     <!--bootstrap-table-->
     <link rel="stylesheet" href="static/public/css/bootstrap-table.min.css">
     <link rel="stylesheet" href="static/public/css/bootstrap-editable.css">
+    <!--notifier-->
+    <link rel="stylesheet" href="static/public/css/notifier-base.min.css">
+    <link rel="stylesheet" href="static/public/css/notifier-theme-plastic.min.css">
 
     <script src="static/public/js/jquery.min.js"></script>
     <script src="static/public/js/bootstrap.min.js"></script>
+    <script src="static/public/js/notifier_all.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="static/public/js/bootstrap-table.js"></script>
@@ -219,8 +223,33 @@
 
 
 <script>
-function cloneOwn() {
+// 初始化Notifier
+var notifier = new Backbone.Notifier({
+    el: 'body',
+    baseCls: 'notifier',
+    types: ['warning', 'error', 'info', 'success'],
+    type: null,
+    dialog: false,
+    modal: false,
+    message: '',
+    title: undefined,
+    ms: 3000,
+    cls: null,
+    hideOnClick: true,
+    loader: false,
+    destroy: false,
+    opacity: 1,
+    top: -500,
+    fadeInMs: 300,
+    fadeOutMs: 500,
+    position: 'top',
+    zIndex: 99999,
+    screenOpacity: 0.5,
+    width: undefined,
+    template: function(settings){ var html = ''; return html; }
+});
 
+function cloneOwn() {
   var obj = arguments[0];
   if (typeof obj === 'undefined' || obj === null)
       return {};
@@ -317,7 +346,7 @@ var app_columns = [
     field: "app_delay",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'delay'},
     width:"5%",
 },
 {
@@ -325,7 +354,7 @@ var app_columns = [
     field: "set_delay_count",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'dcount'},
     width:"5%",
 },
 {
@@ -333,7 +362,7 @@ var app_columns = [
     field: "set_data_kb",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'data_kb'},
     width:"5%",
 },
 {
@@ -341,7 +370,7 @@ var app_columns = [
     field: "set_inactive_count",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'in_count'},
     width:"5%",
 },
 {
@@ -349,7 +378,7 @@ var app_columns = [
     field: "set_location_delay",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'g_delay'},
     width:"5%",
 },
 {
@@ -357,7 +386,7 @@ var app_columns = [
     field: "sensor_delay",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 's_delay'},
     width:"5%",
 },
 {
@@ -365,7 +394,7 @@ var app_columns = [
     field: "kill_delay",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'k_delay'},
     width:"5%",
 },
 {
@@ -373,7 +402,7 @@ var app_columns = [
     field: "location_delay_hot",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'g_delay_hot'},
     width:"5%",
 },
 {
@@ -381,7 +410,7 @@ var app_columns = [
     field: "kill_delay_hot",
     align: 'center',
     valign: 'middle',
-    editable: true,
+    editable: {type: 'text', title: 'k_delay_hot'},
     width:"5%",
 },
 {
@@ -547,6 +576,7 @@ function traversalTable() {
         var kill_delay_hot = $(rows[i]).find('input[name="kill_delay_hot"]').val();
         var featureList = featureList2Json(data, gps, sensor, delay, gps_delay, sensor_delay, kill_delay, delay_count, data_kb, inactive_count);
 
+        $("#appList").bootstrapTable('resetSearch');
         var appListData = $("#appList").bootstrapTable('getData');
         var appList = [];
         var j = 0;
@@ -583,7 +613,6 @@ function traversalTable() {
 
 
 function postData(url, data, flash, msg) {
-
     data['_xsrf'] = $('input[name="_xsrf"]').val();
     $.ajax({
         type: 'POST',
@@ -593,10 +622,10 @@ function postData(url, data, flash, msg) {
         success: function(res) {
             if (res.code !== 0) alert(res.message);
             else {
-
                 if (flash) {
-                    alert('操作成功');
-                    reload();
+                    notifier.success('操作成功!');
+                    // alert('操作成功');
+                    // reload();
                 }
             }
         }
