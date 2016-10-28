@@ -27,6 +27,10 @@ class ConfigHandler(BaseHandler):
         c['power'] = json.dumps(MgDB.get_power())
         self.render('profile_power.htm', c=c)
 
+class IncocoHandler(BaseHandler):
+    def get(self, *args, **kwargs):
+        c = self.make_tpl_para()
+        self.render('incoco.htm', c=c)
 
 class PowerHandler(BaseHandler):
     def post(self, *args, **kwargs):
@@ -56,5 +60,5 @@ class MD5Handler(BaseHandler):
 
         pprint.pprint(ret[1])
         MgDB.save_md5(ret[1]['norm'])
-        
-        Common.jsSuc(self)                
+
+        Common.jsSuc(self)

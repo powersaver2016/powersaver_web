@@ -26,6 +26,7 @@ urls = [
     (r"/logout", 'web.index.LogoutHandler'),
     (r"/", 'web.index.IndexHandler'),
     (r"/powersaver", 'web.power.ConfigHandler'),
+    (r"/incoco", 'web.power.IncocoHandler'),
     (r"/regions/power", 'web.power.PowerHandler'),
     (r"/regions/md5", 'web.power.MD5Handler'),
 

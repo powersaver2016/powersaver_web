@@ -32,3 +32,43 @@ INFO[2016-09-20 09:07:33,709]304 GET /static/public/js/bootstrap-editable.js (18
 INFO[2016-09-20 09:07:33,711]304 GET /static/public/js/bootstrap-table-export.js (182.109.240.34) 1.32ms
 INFO[2016-09-20 09:07:33,719]304 GET /static/public/js/md5.min.js (182.109.240.34) 6.42ms
 INFO[2016-09-20 09:07:33,918]304 GET /static/public/fonts/glyphicons-halflings-regular.woff2 (182.109.240.34) 10.18ms
+INFO[2016-09-20 18:09:44,648]Getting key powersaver
+DEBUG[2016-09-20 18:09:44,650]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 18:09:44,650]Key not found. Message: Not found
+CRITICAL[2016-09-20 18:09:44,650]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 18:09:44,677]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 21:13:02,318]Getting key powersaver
+DEBUG[2016-09-20 21:13:02,319]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 21:13:02,320]Key not found. Message: Not found
+CRITICAL[2016-09-20 21:13:02,320]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 21:13:02,350]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 21:18:17,436]Getting key powersaver
+DEBUG[2016-09-20 21:18:17,448]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 21:18:17,448]Key not found. Message: Not found
+CRITICAL[2016-09-20 21:18:17,449]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 21:18:17,472]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 21:25:19,295]Getting key powersaver
+DEBUG[2016-09-20 21:25:19,300]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 21:25:19,300]Key not found. Message: Not found
+CRITICAL[2016-09-20 21:25:19,301]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 21:25:19,321]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 21:33:03,911]Getting key powersaver
+DEBUG[2016-09-20 21:33:03,912]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 21:33:03,912]Key not found. Message: Not found
+CRITICAL[2016-09-20 21:33:03,912]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 21:33:03,936]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 21:59:12,879]Getting key powersaver
+DEBUG[2016-09-20 21:59:12,881]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 21:59:12,881]Key not found. Message: Not found
+CRITICAL[2016-09-20 21:59:12,881]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 21:59:12,905]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 22:07:25,922]Getting key powersaver
+DEBUG[2016-09-20 22:07:25,923]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 22:07:25,924]Key not found. Message: Not found
+CRITICAL[2016-09-20 22:07:25,924]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 22:07:25,943]Mongodb(127.0.0.1:27017) Ok.
+INFO[2016-09-20 22:11:26,788]Getting key powersaver
+DEBUG[2016-09-20 22:11:26,789]Value Length: 0. Body length: 9. Data type: 0
+DEBUG[2016-09-20 22:11:26,790]Key not found. Message: Not found
+CRITICAL[2016-09-20 22:11:26,790]Memcatched(127.0.0.1:11211) Ok.
+INFO[2016-09-20 22:11:26,816]Mongodb(127.0.0.1:27017) Ok.
